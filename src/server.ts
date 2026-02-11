@@ -1,52 +1,46 @@
+import express, { type NextFunction, type Express, type Request, type Response } from "express";
+import authRouter from "./router/authRouter";
+import ErrorHandlingMiddleware from "./middlewares/ErrorHandlingMiddleware";
+import path from "node:path";
 
-import express, {type NextFunction, type Express, type Request, type Response, response} from "express";
-import authRouter from "./router/authRouter"
-
-// express applocation
-const app: Express = express();
+// express application 
+const app: Express = express()
 
 
-// middlewares
+// builtin middlewares
+// parsers/body parsers
+app.use(express.json({
+  limit: "5mb"
+}));      // content-type: application/json
+app.use(express.urlencoded({
+  limit: "5mb"
+}))   // content-type: application/x-www-form-urlencoded
 
-app.use((req:Request, res:Response, next:NextFunction) => {
-    //develop  ans implement some logic 
-    
- console.log("I am for server.ts middleware")
- next()                   //passe to next immediate middleware call
+
+// static middleware
+app.use("/assets", express.static(path.join(__dirname, "../public/")))
+
+// Routing 
+// app.use(authRouter); // milddeware => Specific routes
+app.use("/api/v1/", authRouter);           // milddeware => Specific routes
+
+// not found 
+app.use((req: Request, res: Response, next: NextFunction) => {
+  next({ code: 404, message: "Not found" });
 })
 
-// Routing
-app.use(authRouter)                  // middleware => Specific routes
+// Exception or Error-handling middleware 
+app.use(ErrorHandlingMiddleware)
 
 
-// not found
-app.use((req:Request, res:Response, next:NextFunction) => {
-    
-  res.jsonp({
-    error: null,
-    messgae: "not found",
-    status: false
+// Server Execution 
+const PORT = 9000
+const HOST = "127.0.0.1"
 
-  })
+// listen to the server 
+app.listen(PORT, HOST, (err) => {
+  if(!err) {
+    console.log(`Server is running on url http://${HOST}:${PORT}`)
+    console.log("Press CTRL+C to discontinue server ...")
+  }
 })
-
-
-
-
-
-
-//-------------Sercer Execuiton------------------
-const PORT = process.env.PORT || 9000;
-
-const Host = process.env.HOST || "127.0.0.1";
-
-
-//listen to the server
-
-app.listen(Number(PORT), Host, (err) => {
-    if (!err) {
-        console.log(`Server is running on http://${Host}:${PORT}`);
-        console.log("Press CTRL + C to stop the server");
-    }
-});
-

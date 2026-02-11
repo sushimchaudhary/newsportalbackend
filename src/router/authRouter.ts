@@ -1,13 +1,21 @@
-import {Router} from "express";
-import { getHealthCheck, userLogin } from "../controller/AuthController";
+import { Router} from "express";
+import AuthController from "../controller/AuthController";
+import bodyValidator from "../middlewares/BodyValidatorMiddleware";
+import { LoginSchema, RegisterSchema } from "../validation-schema/AuthValidation";
 
+// import { getHealthCheck, userLogin } from "../controller/AuthController";
+
+const authCtrl = new AuthController()
 const authRouter = Router();
 
 
-authRouter.get("/",getHealthCheck);
-authRouter.post("/auth/login",userLogin);
+
+authRouter.get("/", authCtrl.getHealthCheck);
 
 
 
+authRouter.post("/auth/login", bodyValidator(LoginSchema), authCtrl.userLogin);
+authRouter.post("/auth/register", bodyValidator(RegisterSchema), authCtrl.userRegister);
+// last end route 
 
 export default authRouter
