@@ -3,6 +3,9 @@ import authRouter from "./router/authRouter";
 import ErrorHandlingMiddleware from "./middlewares/ErrorHandlingMiddleware";
 import path from "node:path";
 
+// load db 
+import "./config/MongodbConfig";
+
 // express application 
 const app: Express = express()
 
