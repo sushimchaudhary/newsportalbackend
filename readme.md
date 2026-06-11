@@ -83,3 +83,35 @@
       // path parameters => req.params, 
       // body(json, x-www-urlencoded, form-data) => req.body
   ```
+
+### File Upload using multer in router 
+  ```ts 
+    // file path: "/src/router/authRouter.ts 
+    
+    // ....
+    authRouter.post("/auth/register", Uploader().single('image'), bodyValidator(RegisterSchema), authCtrl.userRegister);
+    // authRouter.post("/auth/register", Uploader().none(), bodyValidator(RegisterSchema), authCtrl.userRegister);
+    // authRouter.post("/auth/register", Uploader().array('image'), bodyValidator(RegisterSchema), authCtrl.userRegister);
+    // authRouter.post("/auth/register", Uploader().fields([
+    //   {name: "image", maxCount: 1},
+    //   {name: "gallery", maxCount: 5}
+    // ]), bodyValidator(RegisterSchema), authCtrl.userRegister);
+    
+    // ....
+  ```
+
+### Database 
+  a. Relational DB (RDBMS)
+  - mysql, mariadb, postgres, oracle, mssql, sqlite, etc.
+  - Data are store in table format
+  - sequelize, typeorm, prisma ORM provider
+
+  b. Non-Relational DB (No-Relational DBMS)
+  - Mongodb, couchdb
+  - Data are stored in document format(Mainly JSON data)
+  - Mongoose (ODM)  => Object Document Modelling
+  
+
+### Mongodb Usages 
+  - Using local server(laptop setup server)
+  - Using Cloud hosting(Atlas, per account 512mb of db cluster is free)
