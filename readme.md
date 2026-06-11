@@ -115,3 +115,6 @@
 ### Mongodb Usages 
   - Using local server(laptop setup server)
   - Using Cloud hosting(Atlas, per account 512mb of db cluster is free)
+
+
+  newsportal
